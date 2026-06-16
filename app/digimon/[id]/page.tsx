@@ -1,5 +1,6 @@
 import { getDigimonById } from "@/lib/api"
 import Image from "next/image"
+import { EvolutionsSection } from "../../components/EvolutionsSection"
 
 interface DigimonSkill {
   id: number
@@ -48,6 +49,8 @@ export default async function DigimonDetail({ params }: { params: Promise<{ id: 
           </li>
         ))}
       </ul>
+      <EvolutionsSection title="Evoluciones Previas" evolutions={digimon.priorEvolutions} />
+      <EvolutionsSection title="Evoluciones Siguientes" evolutions={digimon.nextEvolutions} />
     </main>
   )
 }
