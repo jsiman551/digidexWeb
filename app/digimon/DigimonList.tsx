@@ -1,8 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Link from "next/link"
-import Image from "next/image"
+import { DigimonCard } from "../components/DigimonCard"
 
 interface Digimon {
   id: number
@@ -27,25 +26,18 @@ export default function DigimonList() {
 
   return (
     <div>
-      <ul className="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {digimon.map((d) => (
-          <li key={d.id} className="bg-white shadow rounded p-4">
-            <Link href={`/digimon/${d.id}`}>
-              <Image
-                src={d.image}
-                alt={d.name}
-                width={150}
-                height={150}
-                className="mx-auto"
-              />
-              <h2 className="text-lg font-semibold text-center mt-2">{d.name}</h2>
-              <p className="text-sm text-gray-600 text-center">
-                Nivel: {d.level} | Tipo: {d.type}
-              </p>
-            </Link>
-          </li>
+          <DigimonCard
+            key={d.id}
+            id={d.id}
+            name={d.name}
+            image={d.image}
+            level={d.level}
+            type={d.type}
+          />
         ))}
-      </ul>
+      </div>
 
       {/* 🔹 Controles de paginación */}
       <div className="flex justify-center gap-4 mt-6">
