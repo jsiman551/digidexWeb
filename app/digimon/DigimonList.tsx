@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Link from "next/link"
 import Image from "next/image"
 
 interface Digimon {
@@ -29,17 +30,19 @@ export default function DigimonList() {
       <ul className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {digimon.map((d) => (
           <li key={d.id} className="bg-white shadow rounded p-4">
-            <Image
-              src={d.image}
-              alt={d.name}
-              width={150}
-              height={150}
-              className="mx-auto"
-            />
-            <h2 className="text-lg font-semibold text-center mt-2">{d.name}</h2>
-            <p className="text-sm text-gray-600 text-center">
-              Nivel: {d.level} | Tipo: {d.type}
-            </p>
+            <Link href={`/digimon/${d.id}`}>
+              <Image
+                src={d.image}
+                alt={d.name}
+                width={150}
+                height={150}
+                className="mx-auto"
+              />
+              <h2 className="text-lg font-semibold text-center mt-2">{d.name}</h2>
+              <p className="text-sm text-gray-600 text-center">
+                Nivel: {d.level} | Tipo: {d.type}
+              </p>
+            </Link>
           </li>
         ))}
       </ul>
