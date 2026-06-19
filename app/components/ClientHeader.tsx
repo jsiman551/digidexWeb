@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation"
 import { useState } from "react"
 
 const navItems = [
-  { href: "/digimon", label: "Digimon" },
   { href: "/attributes", label: "Atributos" },
   { href: "/types", label: "Tipos" },
   { href: "/levels", label: "Niveles" },
