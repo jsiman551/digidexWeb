@@ -23,23 +23,31 @@ function debounce<T extends (...args: any[]) => void>(fn: T, wait = 300) {
 }
 
 export default function DigimonList() {
+  // UI page is 1-based
   const [page, setPage] = useState(1)
   const [digimons, setDigimons] = useState<Digimon[]>([])
   const [loading, setLoading] = useState(false)
+  // totalPages in UI terms (count, 1-based). null means unknown.
   const [totalPages, setTotalPages] = useState<number | null>(null)
 
   // filtro por nombre
   const [name, setName] = useState("")
 
+  // Número de items por página que queremos solicitar a la API
+  const PAGE_SIZE = 12
+
+  // fetch principal: mapea UI page (1-based) a API page (0-based)
   const fetchDigimons = useCallback(
     async (opts?: FetchOpts) => {
       setLoading(true)
       try {
         const uiPage = opts?.page ?? page
+        // API expects 0-based page index
         const apiPage = Math.max(0, uiPage - 1)
 
         const params = new URLSearchParams()
         params.set("page", String(apiPage))
+        params.set("pageSize", String(PAGE_SIZE))
         if (opts?.name) params.set("name", opts.name)
 
         const url = `https://digi-api.com/api/v1/digimon?${params.toString()}`
@@ -56,20 +64,34 @@ export default function DigimonList() {
         } else if (data?.content) {
           list = data.content
 
+          // Preferimos calcular totalPages a partir de totalElements si está disponible
+          const totalElements = data.pageable?.totalElements ?? data.totalElements ?? null
           const apiTotalIndex = data.pageable?.totalPages ?? data.totalPages ?? null
 
-          if (typeof apiTotalIndex === "number") {
+          if (typeof totalElements === "number") {
+            uiTotalPages = Math.max(1, Math.ceil(totalElements / PAGE_SIZE))
+          } else if (typeof apiTotalIndex === "number") {
+            // Si la API devuelve índice (ej: 1 para segunda página), convertimos a conteo UI
             uiTotalPages = apiTotalIndex + 1
           } else {
             uiTotalPages = null
           }
         } else {
-          const fallbackRes = await fetch(`https://digi-api.com/api/v1/digimon?page=${apiPage}`)
+          // Fallback robusto: cargar la página con pageSize y filtrar en cliente
+          const fallbackRes = await fetch(`https://digi-api.com/api/v1/digimon?page=${apiPage}&pageSize=${PAGE_SIZE}`)
           const fallbackData = await fallbackRes.json()
           list = fallbackData?.content ?? fallbackData ?? []
 
+          const totalElements = fallbackData?.pageable?.totalElements ?? fallbackData?.totalElements ?? null
           const apiTotalIndex = fallbackData?.pageable?.totalPages ?? fallbackData?.totalPages ?? null
-          uiTotalPages = typeof apiTotalIndex === "number" ? apiTotalIndex + 1 : null
+
+          if (typeof totalElements === "number") {
+            uiTotalPages = Math.max(1, Math.ceil(totalElements / PAGE_SIZE))
+          } else if (typeof apiTotalIndex === "number") {
+            uiTotalPages = apiTotalIndex + 1
+          } else {
+            uiTotalPages = null
+          }
         }
 
         setTotalPages(uiTotalPages)
@@ -144,27 +166,33 @@ export default function DigimonList() {
 
       {/* paginación */}
       {!loading && digimons.length > 0 && (
-        <div className="flex justify-center gap-4 mt-6">
-          <button
-            onClick={goPrev}
-            className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
-            disabled={page === 1}
-          >
-            Anterior
-          </button>
+        <div className="flex flex-col items-center gap-4 mt-6">
+          <div className="text-sm text-gray-400">
+            Mostrando {digimons.length} resultados por página
+          </div>
 
-          <span className="px-4 py-2 text-gray-300">
-            Página {page}
-            {totalPages ? ` de ${totalPages}` : ""}
-          </span>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={goPrev}
+              className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+              disabled={page === 1}
+            >
+              Anterior
+            </button>
 
-          <button
-            onClick={goNext}
-            className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
-            disabled={nextDisabled}
-          >
-            Siguiente
-          </button>
+            <span className="px-4 py-2 text-gray-300">
+              Página {page}
+              {totalPages ? ` de ${totalPages}` : ""}
+            </span>
+
+            <button
+              onClick={goNext}
+              className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+              disabled={nextDisabled}
+            >
+              Siguiente
+            </button>
+          </div>
         </div>
       )}
     </div>
