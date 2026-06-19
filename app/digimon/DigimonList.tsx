@@ -28,40 +28,51 @@ export default function DigimonList() {
   const [loading, setLoading] = useState(false)
   const [totalPages, setTotalPages] = useState<number | null>(null)
 
-  // filtro por nombre (solo este)
+  // filtro por nombre
   const [name, setName] = useState("")
 
-  // fetch principal: carga la página y aplica filtrado por nombre en cliente (fallback)
   const fetchDigimons = useCallback(
     async (opts?: FetchOpts) => {
       setLoading(true)
       try {
-        const p = opts?.page ?? page
-        // Intentamos llamar al endpoint con query params (por compatibilidad),
-        // pero el fallback siempre filtra en cliente sobre la página cargada.
+        const uiPage = opts?.page ?? page
+        const apiPage = Math.max(0, uiPage - 1)
+
         const params = new URLSearchParams()
-        params.set("page", String(p))
+        params.set("page", String(apiPage))
         if (opts?.name) params.set("name", opts.name)
 
         const url = `https://digi-api.com/api/v1/digimon?${params.toString()}`
         const res = await fetch(url)
         const data = await res.json()
 
-        // La API puede devolver { content, totalPages } o un array
         let list: Digimon[] = []
+        let uiTotalPages: number | null = null
+
         if (Array.isArray(data)) {
+          // API devolvió array directo
           list = data
-          setTotalPages(null)
+          uiTotalPages = null
         } else if (data?.content) {
           list = data.content
-          setTotalPages(data.totalPages ?? null)
+
+          const apiTotalIndex = data.pageable?.totalPages ?? data.totalPages ?? null
+
+          if (typeof apiTotalIndex === "number") {
+            uiTotalPages = apiTotalIndex + 1
+          } else {
+            uiTotalPages = null
+          }
         } else {
-          // Fallback robusto: cargar la página y filtrar en cliente
-          const fallbackRes = await fetch(`https://digi-api.com/api/v1/digimon?page=${p}`)
+          const fallbackRes = await fetch(`https://digi-api.com/api/v1/digimon?page=${apiPage}`)
           const fallbackData = await fallbackRes.json()
           list = fallbackData?.content ?? fallbackData ?? []
-          setTotalPages(fallbackData?.totalPages ?? null)
+
+          const apiTotalIndex = fallbackData?.pageable?.totalPages ?? fallbackData?.totalPages ?? null
+          uiTotalPages = typeof apiTotalIndex === "number" ? apiTotalIndex + 1 : null
         }
+
+        setTotalPages(uiTotalPages)
 
         // Filtrado por nombre (coincidencias parciales)
         const filtered = list.filter((d: Digimon) =>
@@ -71,6 +82,8 @@ export default function DigimonList() {
         setDigimons(filtered)
       } catch (err) {
         console.error("Error fetching digimons", err)
+        setDigimons([])
+        setTotalPages(null)
       } finally {
         setLoading(false)
       }
@@ -100,6 +113,15 @@ export default function DigimonList() {
     setPage(1)
   }
 
+  const goPrev = () => setPage((p) => Math.max(p - 1, 1))
+  const goNext = () =>
+    setPage((p) => {
+      if (totalPages) return Math.min(p + 1, totalPages)
+      return p + 1
+    })
+
+  const nextDisabled = totalPages ? page >= totalPages : false
+
   return (
     <div>
       <FiltersBar name={name} onChange={handleFiltersChange} onClear={handleClear} />
@@ -121,24 +143,30 @@ export default function DigimonList() {
       )}
 
       {/* paginación */}
-      <div className="flex justify-center gap-4 mt-6">
-        <button
-          onClick={() => setPage((p) => Math.max(p - 1, 1))}
-          className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
-          disabled={page === 1}
-        >
-          Anterior
-        </button>
+      {!loading && digimons.length > 0 && (
+        <div className="flex justify-center gap-4 mt-6">
+          <button
+            onClick={goPrev}
+            className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+            disabled={page === 1}
+          >
+            Anterior
+          </button>
 
-        <span className="px-4 py-2 text-gray-300">Página {page}{totalPages ? ` de ${totalPages}` : ""}</span>
+          <span className="px-4 py-2 text-gray-300">
+            Página {page}
+            {totalPages ? ` de ${totalPages}` : ""}
+          </span>
 
-        <button
-          onClick={() => setPage((p) => p + 1)}
-          className="px-4 py-2 bg-blue-600 text-white rounded"
-        >
-          Siguiente
-        </button>
-      </div>
+          <button
+            onClick={goNext}
+            className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+            disabled={nextDisabled}
+          >
+            Siguiente
+          </button>
+        </div>
+      )}
     </div>
   )
 }
