@@ -21,7 +21,6 @@ interface DigimonField {
   image: string
 }
 
-
 export default async function DigimonDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const digimon = await getDigimonById(Number(id))
@@ -31,7 +30,14 @@ export default async function DigimonDetail({ params }: { params: Promise<{ id: 
 
   return (
     <main className="p-6">
-      <h1 className="text-3xl font-bold mb-4">{digimon.name}</h1>
+      <h1 className="text-3xl font-bold mb-4">
+        {digimon.name}
+        {digimon.xAntibody && (
+          <span className="ml-3 align-middle inline-block bg-red-600 text-white text-sm font-semibold px-2 py-1 rounded">
+            X-Antibody
+          </span>
+        )}
+      </h1>
 
       {digimon.images?.[0] && (
         <Image
