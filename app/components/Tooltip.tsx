@@ -1,9 +1,9 @@
-"use client"
+'use client';
 
-import { useState } from "react"
+import { useState } from 'react';
 
 export function Tooltip({ label, children }: { label: string; children: React.ReactNode }) {
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
 
   return (
     <span
@@ -18,5 +18,5 @@ export function Tooltip({ label, children }: { label: string; children: React.Re
         </div>
       )}
     </span>
-  )
+  );
 }

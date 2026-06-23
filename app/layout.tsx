@@ -1,10 +1,10 @@
-import "./globals.css"
-import ClientHeader from "./components/ClientHeader"
+import './globals.css';
+import ClientHeader from './components/ClientHeader';
 
 export const metadata = {
-  title: "Digidex",
-  description: "Enciclopedia Digital de Digimon",
-}
+  title: 'Digidex',
+  description: 'Enciclopedia Digital de Digimon',
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -19,5 +19,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </footer>
       </body>
     </html>
-  )
+  );
 }

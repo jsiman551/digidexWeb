@@ -1,9 +1,9 @@
-"use client"
+'use client';
 
 interface FiltersBarProps {
-  name: string
-  onChange: (payload: { name: string }) => void
-  onClear: () => void
+  name: string;
+  onChange: (payload: { name: string }) => void;
+  onClear: () => void;
 }
 
 export function FiltersBar({ name, onChange, onClear }: FiltersBarProps) {
@@ -34,5 +34,5 @@ export function FiltersBar({ name, onChange, onClear }: FiltersBarProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,51 +1,63 @@
-import { getDigimonById, getAttributeById, getLevelById, getFieldById, getTypeById } from "@/lib/api"
-import Image from "next/image"
-import { EvolutionsSection } from "../../components/EvolutionsSection"
-import { Tooltip } from "../../components/Tooltip" // componente simple de tooltip
+import {
+  getDigimonById,
+  getAttributeById,
+  getLevelById,
+  getFieldById,
+  getTypeById,
+} from '@/lib/api';
+import Image from 'next/image';
+import { EvolutionsSection } from '../../components/EvolutionsSection';
+import { Tooltip } from '../../components/Tooltip'; // componente simple de tooltip
 
 interface DigimonSkill {
-  id: number
-  skill: string
-  translation: string
-  description: string
+  id: number;
+  skill: string;
+  translation: string;
+  description: string;
 }
 
 interface DigimonDescription {
-  origin: string
-  language: string
-  description: string
+  origin: string;
+  language: string;
+  description: string;
 }
 
 interface DigimonField {
-  id: number
-  field: string
-  image: string
+  id: number;
+  field: string;
+  image: string;
 }
 
 export default async function DigimonDetail({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
-  const digimon = await getDigimonById(Number(id))
+  const { id } = await params;
+  const digimon = await getDigimonById(Number(id));
 
   // Descripciones
-  const englishDesc = digimon.descriptions?.find((d: DigimonDescription) => d.language === "en_us")?.description
-  const japaneseDesc = digimon.descriptions?.find((d: DigimonDescription) => d.language === "jap")?.description
+  const englishDesc = digimon.descriptions?.find(
+    (d: DigimonDescription) => d.language === 'en_us',
+  )?.description;
+  const japaneseDesc = digimon.descriptions?.find(
+    (d: DigimonDescription) => d.language === 'jap',
+  )?.description;
 
   // Datos enriquecidos
-  const attribute = digimon.attributes?.[0]
-  const level = digimon.levels?.[0]
-  const type = digimon.types?.[0]
+  const attribute = digimon.attributes?.[0];
+  const level = digimon.levels?.[0];
+  const type = digimon.types?.[0];
 
-  const attributeDetail = attribute ? await getAttributeById(attribute.id) : null
-  const levelDetail = level ? await getLevelById(level.id) : null
-  const typeDetail = type ? await getTypeById(type.id) : null
+  const attributeDetail = attribute ? await getAttributeById(attribute.id) : null;
+  const levelDetail = level ? await getLevelById(level.id) : null;
+  const typeDetail = type ? await getTypeById(type.id) : null;
 
   // Para fields, hacemos fetch en paralelo
   const fieldsDetail = digimon.fields
-    ? await Promise.all(digimon.fields.map(async (f: DigimonField)=> {
-        const detail = await getFieldById(f.id)
-        return { ...f, detail }
-      }))
-    : []
+    ? await Promise.all(
+        digimon.fields.map(async (f: DigimonField) => {
+          const detail = await getFieldById(f.id);
+          return { ...f, detail };
+        }),
+      )
+    : [];
 
   return (
     <main className="p-6">
@@ -70,37 +82,37 @@ export default async function DigimonDetail({ params }: { params: Promise<{ id: 
 
       {/* Nivel */}
       <div className="text-lg">
-        Nivel:{" "}
+        Nivel:{' '}
         {levelDetail ? (
-          <Tooltip label={levelDetail?.description ?? "Descripción no disponible"}>
+          <Tooltip label={levelDetail?.description ?? 'Descripción no disponible'}>
             <span className="cursor-help text-yellow-300">{level.level}</span>
           </Tooltip>
         ) : (
-          level?.level ?? "Desconocido"
+          (level?.level ?? 'Desconocido')
         )}
       </div>
 
       {/* Tipo */}
       <div className="text-lg">
-        Tipo:{" "}
+        Tipo:{' '}
         {typeDetail ? (
-          <Tooltip label={typeDetail.description ?? "Descripción no disponible"}>
+          <Tooltip label={typeDetail.description ?? 'Descripción no disponible'}>
             <span className="cursor-help text-yellow-300">{type.type}</span>
           </Tooltip>
         ) : (
-          type?.type ?? "Desconocido"
+          (type?.type ?? 'Desconocido')
         )}
       </div>
 
       {/* Atributo */}
       <div className="text-lg">
-        Atributo:{" "}
+        Atributo:{' '}
         {attributeDetail ? (
-          <Tooltip label={attributeDetail?.description ?? "Descripción no disponible"}>
+          <Tooltip label={attributeDetail?.description ?? 'Descripción no disponible'}>
             <span className="cursor-help text-yellow-300">{attribute.attribute}</span>
           </Tooltip>
         ) : (
-          attribute?.attribute ?? "Desconocido"
+          (attribute?.attribute ?? 'Desconocido')
         )}
       </div>
 
@@ -110,7 +122,7 @@ export default async function DigimonDetail({ params }: { params: Promise<{ id: 
           <h2 className="text-2xl font-bold mb-2">Fields</h2>
           <div className="flex flex-wrap gap-4">
             {fieldsDetail.map((f) => (
-              <Tooltip key={f.id} label={f.detail?.description ?? "Descripción no disponible"}>
+              <Tooltip key={f.id} label={f.detail?.description ?? 'Descripción no disponible'}>
                 <div className="flex items-center gap-2 cursor-help bg-gray-800 rounded px-3 py-2">
                   <Image src={f.image} alt={f.field} width={40} height={40} />
                   <span className="text-lg">{f.field}</span>
@@ -124,7 +136,7 @@ export default async function DigimonDetail({ params }: { params: Promise<{ id: 
       {/* Descripción */}
       <div className="mt-4">
         <h2 className="text-2xl font-bold mb-2">Descripción</h2>
-        <p className="text-lg">{englishDesc || "Sin descripción disponible"}</p>
+        <p className="text-lg">{englishDesc || 'Sin descripción disponible'}</p>
         {japaneseDesc && (
           <details className="mt-2">
             <summary className="cursor-pointer text-yellow-400">Ver en Japonés</summary>
@@ -147,5 +159,5 @@ export default async function DigimonDetail({ params }: { params: Promise<{ id: 
       <EvolutionsSection title="Evoluciones Previas" evolutions={digimon.priorEvolutions} />
       <EvolutionsSection title="Evoluciones Siguientes" evolutions={digimon.nextEvolutions} />
     </main>
-  )
+  );
 }
