@@ -31,3 +31,22 @@ export async function getDigimonById(id: number) {
   }
   return res.json()
 }
+
+export async function getAttributeById(id: number) {
+  const res = await fetch(`https://digi-api.com/api/v1/attribute/${id}`)
+  if (!res.ok) throw new Error("Error fetching attribute")
+  return res.json()
+}
+
+export async function getLevelById(id: number) {
+  const res = await fetch(`https://digi-api.com/api/v1/level/${id}`)
+  if (!res.ok) throw new Error("Error fetching level")
+  return res.json()
+}
+
+export async function getFieldById(id: number) {
+  const res = await fetch(`https://digi-api.com/api/v1/field/${id}`)
+  if (!res.ok) throw new Error("Error fetching field")
+  return res.json()
+}
+
