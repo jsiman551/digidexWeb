@@ -50,3 +50,8 @@ export async function getFieldById(id: number) {
   return res.json()
 }
 
+export async function getTypeById(id: number) {
+  const res = await fetch(`https://digi-api.com/api/v1/type/${id}`)
+  if (!res.ok) throw new Error("Error fetching type")
+  return res.json()
+}
