@@ -14,8 +14,9 @@ export function DigimonCard({ digimon }: { digimon: Digimon }) {
   return (
     <Link
       href={`/digimon/${digimon.id}`}
-      className="block bg-gradient-to-b from-gray-800 to-gray-900 rounded-lg shadow-lg p-4 
-                 hover:shadow-xl hover:scale-105 transition-transform duration-300 ease-in-out text-center"
+      className="block bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 
+                 rounded-lg shadow-lg p-4 hover:shadow-xl hover:scale-105 transition-transform 
+                 duration-300 ease-in-out text-center"
     >
       <Image
         src={image}
@@ -24,8 +25,8 @@ export function DigimonCard({ digimon }: { digimon: Digimon }) {
         height={150}
         className="mx-auto mb-2 rounded"
       />
-      <h2 className="text-lg font-semibold text-yellow-300">{digimon.name}</h2>
-      <p className="text-sm text-gray-400 mt-1">View Details</p>
+      <h2 className="text-lg font-semibold text-yellow-600 dark:text-yellow-300">{digimon.name}</h2>
+      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">View Details</p>
     </Link>
   );
 }

@@ -13,7 +13,11 @@ export function Tooltip({ label, children }: { label: string; children: React.Re
     >
       {children}
       {visible && (
-        <div className="absolute z-10 left-1/2 -translate-x-1/2 mt-2 w-64 bg-gray-900 text-white text-sm p-2 rounded shadow-lg">
+        <div
+          className="absolute z-10 left-1/2 -translate-x-1/2 mt-2 w-64 
+                     bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 
+                     text-sm p-2 rounded shadow-lg transition-opacity duration-200 ease-in-out"
+        >
           {label}
         </div>
       )}

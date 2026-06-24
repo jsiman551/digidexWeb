@@ -4,11 +4,11 @@ import Link from 'next/link';
 
 export default function ClientHeader() {
   return (
-    <header className="bg-gradient-to-r from-indigo-800 via-purple-900 to-pink-900 shadow-lg">
+    <header className="bg-gradient-to-r from-indigo-200 via-purple-300 to-pink-300 dark:from-indigo-800 dark:via-purple-900 dark:to-pink-900 shadow-lg">
       <nav className="container mx-auto flex items-center justify-center p-4">
         <Link
           href="/digimon"
-          className="text-3xl font-extrabold text-yellow-400 tracking-wide"
+          className="text-3xl font-extrabold text-yellow-600 dark:text-yellow-400 tracking-wide"
           aria-label="Go to the main Digidex page"
         >
           <h1 className="sr-only">Digidex</h1>

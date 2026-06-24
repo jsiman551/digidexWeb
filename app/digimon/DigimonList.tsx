@@ -143,13 +143,15 @@ export default function DigimonList() {
       {loading ? (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="h-56 bg-gray-800 animate-pulse rounded" />
+            <div key={i} className="h-56 bg-gray-200 dark:bg-gray-800 animate-pulse rounded" />
           ))}
         </div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {digimons.length === 0 ? (
-            <p className="text-center text-gray-400 col-span-full">No digimons found.</p>
+            <p className="text-center text-gray-500 dark:text-gray-400 col-span-full">
+              No digimons found.
+            </p>
           ) : (
             digimons.map((d) => <DigimonCard key={d.id} digimon={d} />)
           )}
@@ -158,25 +160,29 @@ export default function DigimonList() {
 
       {!loading && digimons.length > 0 && (
         <div className="flex flex-col items-center gap-4 mt-6">
-          <div className="text-sm text-gray-400">Showing {digimons.length} results per page</div>
+          <div className="text-sm text-gray-600 dark:text-gray-400">
+            Showing {digimons.length} results per page
+          </div>
 
           <div className="flex items-center gap-4">
             <button
               onClick={goPrev}
-              className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+              className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50 
+             hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
               disabled={page === 1}
             >
               Previous
             </button>
 
-            <span className="px-4 py-2 text-gray-300">
+            <span className="px-4 py-2 text-gray-700 dark:text-gray-300">
               Page {page}
               {totalPages ? ` of ${totalPages}` : ''}
             </span>
 
             <button
               onClick={goNext}
-              className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+              className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50 
+             hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
               disabled={nextDisabled}
             >
               Next

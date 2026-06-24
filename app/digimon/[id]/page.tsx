@@ -58,7 +58,7 @@ export default async function DigimonDetail({ params }: { params: Promise<{ id: 
 
   return (
     <main className="p-6">
-      <h1 className="text-3xl font-bold mb-4">
+      <h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-gray-100">
         {digimon.name}
         {digimon.xAntibody && (
           <span className="ml-3 align-middle inline-block bg-red-600 text-white text-sm font-semibold px-2 py-1 rounded">
@@ -77,33 +77,35 @@ export default async function DigimonDetail({ params }: { params: Promise<{ id: 
         />
       )}
 
-      <div className="text-lg">
+      <div className="text-lg text-gray-700 dark:text-gray-300">
         Level:{' '}
         {levelDetail ? (
           <Tooltip label={levelDetail?.description ?? 'Description not available'}>
-            <span className="cursor-help text-yellow-300">{level.level}</span>
+            <span className="cursor-help text-yellow-600 dark:text-yellow-300">{level.level}</span>
           </Tooltip>
         ) : (
           (level?.level ?? 'Unknown')
         )}
       </div>
 
-      <div className="text-lg">
+      <div className="text-lg text-gray-700 dark:text-gray-300">
         Type:{' '}
         {typeDetail ? (
           <Tooltip label={typeDetail.description ?? 'Description not available'}>
-            <span className="cursor-help text-yellow-300">{type.type}</span>
+            <span className="cursor-help text-yellow-600 dark:text-yellow-300">{type.type}</span>
           </Tooltip>
         ) : (
           (type?.type ?? 'Unknown')
         )}
       </div>
 
-      <div className="text-lg">
+      <div className="text-lg text-gray-700 dark:text-gray-300">
         Attribute:{' '}
         {attributeDetail ? (
           <Tooltip label={attributeDetail?.description ?? 'Description not available'}>
-            <span className="cursor-help text-yellow-300">{attribute.attribute}</span>
+            <span className="cursor-help text-yellow-600 dark:text-yellow-300">
+              {attribute.attribute}
+            </span>
           </Tooltip>
         ) : (
           (attribute?.attribute ?? 'Unknown')
@@ -117,9 +119,9 @@ export default async function DigimonDetail({ params }: { params: Promise<{ id: 
           <div className="flex flex-wrap gap-4">
             {fieldsDetail.map((f) => (
               <Tooltip key={f.id} label={f.detail?.description ?? 'Description not available'}>
-                <div className="flex items-center gap-2 cursor-help bg-gray-800 rounded px-3 py-2">
+                <div className="flex items-center gap-2 cursor-help bg-gray-200 dark:bg-gray-800 rounded px-3 py-2">
                   <Image src={f.image} alt={f.field} width={40} height={40} />
-                  <span className="text-lg">{f.field}</span>
+                  <span className="text-lg text-gray-900 dark:text-gray-100">{f.field}</span>
                 </div>
               </Tooltip>
             ))}
@@ -128,18 +130,22 @@ export default async function DigimonDetail({ params }: { params: Promise<{ id: 
       )}
 
       <div className="mt-4">
-        <h2 className="text-2xl font-bold mb-2">Description</h2>
-        <p className="text-lg">{englishDesc || 'No description available'}</p>
+        <h2 className="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100">Description</h2>
+        <p className="text-lg text-gray-700 dark:text-gray-300">
+          {englishDesc || 'No description available'}
+        </p>
         {japaneseDesc && (
           <details className="mt-2">
-            <summary className="cursor-pointer text-yellow-400">View in Japanese</summary>
-            <p className="text-lg mt-1">{japaneseDesc}</p>
+            <summary className="cursor-pointer text-yellow-600 dark:text-yellow-300">
+              View in Japanese
+            </summary>
+            <p className="text-lg mt-1 text-gray-700 dark:text-gray-300">{japaneseDesc}</p>
           </details>
         )}
       </div>
 
-      <h2 className="text-2xl font-bold mt-6">Skills</h2>
-      <ul className="list-disc pl-6">
+      <h2 className="text-2xl font-bold mt-6 text-gray-900 dark:text-gray-100">Skills</h2>
+      <ul className="list-disc pl-6 text-gray-700 dark:text-gray-300">
         {digimon.skills?.map((s: DigimonSkill) => (
           <li key={s.id}>
             <strong>{s.skill}</strong>: {s.description}
