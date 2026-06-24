@@ -2,9 +2,9 @@ import './globals.css';
 import ClientHeader from './components/ClientHeader';
 
 export const metadata = {
-  title: 'Digidex',
-  description: 'Enciclopedia Digital de Digimon',
-};
+  title: "Digidex - Enciclopedia de Digimon",
+  description: "Explora niveles, atributos, tipos y evoluciones de todos los Digimon.",
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
