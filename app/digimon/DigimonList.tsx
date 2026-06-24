@@ -27,16 +27,12 @@ export default function DigimonList() {
   const [page, setPage] = useState(1);
   const [digimons, setDigimons] = useState<Digimon[]>([]);
   const [loading, setLoading] = useState(false);
-  // totalPages in UI terms (count, 1-based). null means unknown.
   const [totalPages, setTotalPages] = useState<number | null>(null);
 
-  // filtro por nombre
   const [name, setName] = useState('');
 
-  // Número de items por página que queremos solicitar a la API
   const PAGE_SIZE = 12;
 
-  // fetch principal: mapea UI page (1-based) a API page (0-based)
   const fetchDigimons = useCallback(
     async (opts?: FetchOpts) => {
       setLoading(true);
@@ -58,26 +54,22 @@ export default function DigimonList() {
         let uiTotalPages: number | null = null;
 
         if (Array.isArray(data)) {
-          // API devolvió array directo
           list = data;
           uiTotalPages = null;
         } else if (data?.content) {
           list = data.content;
 
-          // Preferimos calcular totalPages a partir de totalElements si está disponible
           const totalElements = data.pageable?.totalElements ?? data.totalElements ?? null;
           const apiTotalIndex = data.pageable?.totalPages ?? data.totalPages ?? null;
 
           if (typeof totalElements === 'number') {
             uiTotalPages = Math.max(1, Math.ceil(totalElements / PAGE_SIZE));
           } else if (typeof apiTotalIndex === 'number') {
-            // Si la API devuelve índice (ej: 1 para segunda página), convertimos a conteo UI
             uiTotalPages = apiTotalIndex + 1;
           } else {
             uiTotalPages = null;
           }
         } else {
-          // Fallback robusto: cargar la página con pageSize y filtrar en cliente
           const fallbackRes = await fetch(
             `https://digi-api.com/api/v1/digimon?page=${apiPage}&pageSize=${PAGE_SIZE}`,
           );
@@ -100,7 +92,6 @@ export default function DigimonList() {
 
         setTotalPages(uiTotalPages);
 
-        // Filtrado por nombre (coincidencias parciales)
         const filtered = list.filter((d: Digimon) =>
           opts?.name ? d.name.toLowerCase().includes(opts.name.toLowerCase()) : true,
         );
@@ -117,18 +108,15 @@ export default function DigimonList() {
     [page],
   );
 
-  // debounce para evitar peticiones por cada tecla
   const debouncedFetch = useMemo(
     () => debounce((payload: FetchOpts) => fetchDigimons(payload), 350),
     [fetchDigimons],
   );
 
-  // efecto: recargar cuando cambian page o name
   useEffect(() => {
     debouncedFetch({ page, name });
   }, [page, name, debouncedFetch]);
 
-  // handlers
   const handleFiltersChange = (payload: { name: string }) => {
     setName(payload.name);
     setPage(1);
@@ -161,19 +149,16 @@ export default function DigimonList() {
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {digimons.length === 0 ? (
-            <p className="text-center text-gray-400 col-span-full">No se encontraron Digimon.</p>
+            <p className="text-center text-gray-400 col-span-full">No digimons found.</p>
           ) : (
             digimons.map((d) => <DigimonCard key={d.id} digimon={d} />)
           )}
         </div>
       )}
 
-      {/* paginación */}
       {!loading && digimons.length > 0 && (
         <div className="flex flex-col items-center gap-4 mt-6">
-          <div className="text-sm text-gray-400">
-            Mostrando {digimons.length} resultados por página
-          </div>
+          <div className="text-sm text-gray-400">Showing {digimons.length} results per page</div>
 
           <div className="flex items-center gap-4">
             <button
@@ -181,12 +166,12 @@ export default function DigimonList() {
               className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
               disabled={page === 1}
             >
-              Anterior
+              Previous
             </button>
 
             <span className="px-4 py-2 text-gray-300">
-              Página {page}
-              {totalPages ? ` de ${totalPages}` : ''}
+              Page {page}
+              {totalPages ? ` of ${totalPages}` : ''}
             </span>
 
             <button
@@ -194,7 +179,7 @@ export default function DigimonList() {
               className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
               disabled={nextDisabled}
             >
-              Siguiente
+              Next
             </button>
           </div>
         </div>

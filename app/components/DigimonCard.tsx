@@ -9,7 +9,6 @@ interface Digimon {
 }
 
 export function DigimonCard({ digimon }: { digimon: Digimon }) {
-  // El listado devuelve `image` plano, pero dejamos fallback por seguridad
   const image = digimon.image ?? digimon.images?.[0]?.href ?? '/placeholder.png';
 
   return (
@@ -20,13 +19,13 @@ export function DigimonCard({ digimon }: { digimon: Digimon }) {
     >
       <Image
         src={image}
-        alt={digimon.name || 'Imagen de Digimon'}
+        alt={digimon.name || 'Digimon Image'}
         width={150}
         height={150}
         className="mx-auto mb-2 rounded"
       />
       <h2 className="text-lg font-semibold text-yellow-300">{digimon.name}</h2>
-      <p className="text-sm text-gray-400 mt-1">Ver detalles</p>
+      <p className="text-sm text-gray-400 mt-1">View Details</p>
     </Link>
   );
 }
