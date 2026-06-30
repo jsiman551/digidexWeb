@@ -3,14 +3,14 @@ import { render, screen } from '@testing-library/react';
 import ClientHeader from '../ClientHeader';
 
 describe('ClientHeader', () => {
-  it('renderiza el header con la clase de gradiente', () => {
+  it('Renders the header with the gradient class', () => {
     const { container } = render(<ClientHeader />);
     const header = container.querySelector('header');
     expect(header).toBeInTheDocument();
     expect(header).toHaveClass('bg-gradient-to-r');
   });
 
-  it('renderiza el link a /digimon con aria-label y textos correctos', () => {
+  it('Renders the link to /digimon with the correct aria-label and text', () => {
     render(<ClientHeader />);
     const link = screen.getByRole('link', { name: /Go to the main Digidex page/i });
     expect(link).toBeInTheDocument();

@@ -8,17 +8,17 @@ describe('EvolutionsSection', () => {
     { id: 2, digimon: 'Gabumon', image: '/gabumon.png', url: '/digimon/2' },
   ];
 
-  it('no renderiza nada si evolutions está vacío', () => {
+  it('It doesnt render anything if evolutions is empty.', () => {
     const { container } = render(<EvolutionsSection title="Evolutions" evolutions={[]} />);
     expect(container.firstChild).toBeNull();
   });
 
-  it('renderiza el título correctamente', () => {
+  it('renders the title correctly', () => {
     render(<EvolutionsSection title="Evolutions" evolutions={evolutions} />);
     expect(screen.getByRole('heading', { name: 'Evolutions' })).toBeInTheDocument();
   });
 
-  it('renderiza un link por cada evolución', () => {
+  it('renders a link for each evolution', () => {
     render(<EvolutionsSection title="Evolutions" evolutions={evolutions} />);
     const links = screen.getAllByRole('link');
     expect(links).toHaveLength(2);
@@ -26,7 +26,7 @@ describe('EvolutionsSection', () => {
     expect(links[1]).toHaveAttribute('href', '/digimon/2');
   });
 
-  it('renderiza las imágenes con el nombre correcto', () => {
+  it('renders the images with the correct names', () => {
     render(<EvolutionsSection title="Evolutions" evolutions={evolutions} />);
     const agumonImg = screen.getByRole('img', { name: /Agumon/i });
     const gabumonImg = screen.getByRole('img', { name: /Gabumon/i });
@@ -35,7 +35,7 @@ describe('EvolutionsSection', () => {
     expect(gabumonImg.getAttribute('src')).toContain('gabumon.png');
   });
 
-  it('renderiza los nombres de los digimon', () => {
+  it('renders the names of the digimon', () => {
     render(<EvolutionsSection title="Evolutions" evolutions={evolutions} />);
     expect(screen.getByText('Agumon')).toBeInTheDocument();
     expect(screen.getByText('Gabumon')).toBeInTheDocument();

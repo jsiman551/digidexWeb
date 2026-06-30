@@ -5,31 +5,31 @@ import { DigimonCard } from '../DigimonCard';
 describe('DigimonCard', () => {
   const baseDigimon = { id: 1, name: 'Agumon' };
 
-  it('renderiza el link con la ruta correcta', () => {
+  it('renders the link with the correct path', () => {
     render(<DigimonCard digimon={baseDigimon} />);
     const link = screen.getByRole('link');
     expect(link).toHaveAttribute('href', '/digimon/1');
   });
 
-  it('usa la imagen directa si está disponible', () => {
+  it('Use the direct image if available', () => {
     render(<DigimonCard digimon={{ ...baseDigimon, image: '/agumon.png' }} />);
     const img = screen.getByRole('img', { name: /Agumon/i });
     expect(img.getAttribute('src')).toContain('agumon.png');
   });
 
-  it('usa la primera imagen del array si no hay image', () => {
+  it('Use the first image from the array if there is no image', () => {
     render(<DigimonCard digimon={{ ...baseDigimon, images: [{ href: '/agumon-array.png' }] }} />);
     const img = screen.getByRole('img', { name: /Agumon/i });
     expect(img.getAttribute('src')).toContain('agumon-array.png');
   });
 
-  it('usa el placeholder si no hay ninguna imagen', () => {
+  it('Use the placeholder if there is no image', () => {
     render(<DigimonCard digimon={baseDigimon} />);
     const img = screen.getByRole('img', { name: /Agumon/i });
     expect(img.getAttribute('src')).toContain('placeholder.png');
   });
 
-  it('muestra el nombre y el texto fijo', () => {
+  it('displays the name and the static text', () => {
     render(<DigimonCard digimon={baseDigimon} />);
     expect(screen.getByRole('heading', { name: 'Agumon' })).toBeInTheDocument();
     expect(screen.getByText(/View Details/i)).toBeInTheDocument();

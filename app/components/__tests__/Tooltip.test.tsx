@@ -4,12 +4,12 @@ import { describe, it, expect } from 'vitest';
 import { Tooltip } from '../Tooltip';
 
 describe('Tooltip', () => {
-  it('renderiza los children siempre', () => {
+  it('Always render the children', () => {
     render(<Tooltip label="Info">Hover me</Tooltip>);
     expect(screen.getByText(/Hover me/i)).toBeInTheDocument();
   });
 
-  it('muestra el tooltip al hacer hover', async () => {
+  it('shows the tooltip on hover', async () => {
     const user = userEvent.setup();
     render(<Tooltip label="Info">Hover me</Tooltip>);
     const trigger = screen.getByText(/Hover me/i);
@@ -20,7 +20,7 @@ describe('Tooltip', () => {
     expect(screen.getByText(/Info/i)).toBeInTheDocument();
   });
 
-  it('oculta el tooltip al salir del hover', async () => {
+  it('hides the tooltip when the mouse leaves the trigger', async () => {
     const user = userEvent.setup();
     render(<Tooltip label="Info">Hover me</Tooltip>);
     const trigger = screen.getByText(/Hover me/i);

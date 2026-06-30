@@ -23,7 +23,7 @@ describe('DigimonDetail (integration)', () => {
     vi.resetAllMocks();
   });
 
-  it('renderiza nombre, imagen y descripciones', async () => {
+  it('renders name, image, and descriptions', async () => {
     (getDigimonById as Mock).mockResolvedValue({
       id: 1,
       name: 'Agumon',
@@ -68,7 +68,7 @@ describe('DigimonDetail (integration)', () => {
     expect(screen.getByText(/Shoots fire/)).toBeInTheDocument();
   });
 
-  it('muestra mensaje si no hay descripción en inglés', async () => {
+  it('shows message if no description is available in English', async () => {
     (getDigimonById as Mock).mockResolvedValue({
       id: 2,
       name: 'Gabumon',

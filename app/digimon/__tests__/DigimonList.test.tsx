@@ -8,7 +8,7 @@ describe('DigimonList (integration)', () => {
     vi.restoreAllMocks();
   });
 
-  it('renderiza resultados iniciales desde la API', async () => {
+  it('renders initial results from the API', async () => {
     const fakeData = {
       content: [
         { id: 1, name: 'Agumon', image: '/agumon.png' },
@@ -30,7 +30,7 @@ describe('DigimonList (integration)', () => {
     expect(gabumon).toBeInTheDocument();
   });
 
-  it('muestra skeletons mientras carga', () => {
+  it('shows skeletons while loading', () => {
     vi.spyOn(global, 'fetch').mockResolvedValue({
       json: async () => ({ content: [] }),
     } as Response);
@@ -40,7 +40,7 @@ describe('DigimonList (integration)', () => {
     expect(skeletons.length).toBeGreaterThan(0);
   });
 
-  it('filtra resultados por nombre usando FiltersBar', async () => {
+  it('filters results by name using FiltersBar', async () => {
     const fakeData = {
       content: [
         { id: 1, name: 'Agumon', image: '/agumon.png' },
@@ -63,7 +63,7 @@ describe('DigimonList (integration)', () => {
     expect(screen.queryByText('Agumon')).not.toBeInTheDocument();
   });
 
-  it('muestra mensaje de no resultados', async () => {
+  it('shows message if no results are found', async () => {
     const fakeData = { content: [] };
 
     vi.spyOn(global, 'fetch').mockResolvedValue({

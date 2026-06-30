@@ -4,13 +4,13 @@ import { describe, it, expect, vi } from 'vitest';
 import { FiltersBar } from '../FiltersBar';
 
 describe('FiltersBar', () => {
-  it('renderiza el input con el valor inicial', () => {
+  it('Renders the input with the initial value', () => {
     render(<FiltersBar name="Agumon" onChange={() => {}} onClear={() => {}} />);
     const input = screen.getByPlaceholderText(/Digimon name.../i);
     expect(input).toHaveValue('Agumon');
   });
 
-  it('llama a onChange cuando el usuario escribe', async () => {
+  it('calls onChange when the user types', async () => {
     const user = userEvent.setup();
     const handleChange = vi.fn();
 
@@ -24,7 +24,7 @@ describe('FiltersBar', () => {
     expect(handleChange).toHaveBeenCalledWith({ name: 'n' });
   });
 
-  it('llama a onClear cuando se hace clic en el botón', async () => {
+  it('calls onClear when the user clicks the clear button', async () => {
     const user = userEvent.setup();
     const handleClear = vi.fn();
 
