@@ -1,10 +1,6 @@
 'use client';
 
-interface FiltersBarProps {
-  name: string;
-  onChange: (payload: { name: string }) => void;
-  onClear: () => void;
-}
+import { FiltersBarProps } from '../../types';
 
 export function FiltersBar({ name, onChange, onClear }: FiltersBarProps) {
   return (

@@ -1,11 +1,4 @@
-export interface Digimon {
-  id: number
-  name: string
-  image: string
-  level: string
-  attribute: string
-  type: string
-}
+import { Digimon } from '@/types';
 
 export async function getDigimon(page: number = 1): Promise<Digimon[]> {
   const res = await fetch(`https://digi-api.com/api/v1/digimon?page=${page}`, {

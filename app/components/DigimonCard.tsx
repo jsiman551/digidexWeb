@@ -1,12 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-
-interface Digimon {
-  id: number;
-  name: string;
-  image?: string;
-  images?: { href: string }[];
-}
+import { Digimon } from '../../types';
 
 export function DigimonCard({ digimon }: { digimon: Digimon }) {
   const image = digimon.image ?? digimon.images?.[0]?.href ?? '/placeholder.png';

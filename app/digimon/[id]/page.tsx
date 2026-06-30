@@ -8,25 +8,7 @@ import {
 import Image from 'next/image';
 import { EvolutionsSection } from '../../components/EvolutionsSection';
 import { Tooltip } from '../../components/Tooltip';
-
-interface DigimonSkill {
-  id: number;
-  skill: string;
-  translation: string;
-  description: string;
-}
-
-interface DigimonDescription {
-  origin: string;
-  language: string;
-  description: string;
-}
-
-interface DigimonField {
-  id: number;
-  field: string;
-  image: string;
-}
+import { DigimonSkill, DigimonDescription, DigimonField } from '@/types';
 
 export default async function DigimonDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

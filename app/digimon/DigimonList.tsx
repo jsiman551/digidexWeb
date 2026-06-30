@@ -3,14 +3,7 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { DigimonCard } from '../components/DigimonCard';
 import { FiltersBar } from '../components/FiltersBar';
-
-interface Digimon {
-  id: number;
-  name: string;
-  image: string;
-}
-
-type FetchOpts = { page?: number; name?: string };
+import { FetchOpts, Digimon } from '@/types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function debounce<T extends (...args: any[]) => void>(fn: T, wait = 300) {

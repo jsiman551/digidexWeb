@@ -1,12 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-
-interface Evolution {
-  id: number;
-  digimon: string;
-  image: string;
-  url: string;
-}
+import { Evolution } from '../../types';
 
 export function EvolutionsSection({
   title,
