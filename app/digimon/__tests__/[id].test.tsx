@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import DigimonDetail from '../[id]/page';
 
-// Mock de las funciones de la API
 vi.mock('@/lib/api', () => ({
   getDigimonById: vi.fn(),
   getAttributeById: vi.fn(),
@@ -50,27 +49,21 @@ describe('DigimonDetail (integration)', () => {
 
     render(await DigimonDetail({ params: Promise.resolve({ id: '1' }) }));
 
-    // Nombre y X-Antibody
     expect(await screen.findByText(/Agumon/)).toBeInTheDocument();
     expect(screen.getByText(/X-Antibody/)).toBeInTheDocument();
 
-    // Imagen
     const img = screen.getByRole('img', { name: /Agumon/i });
     expect(img.getAttribute('src')).toContain('agumon.png');
 
-    // Descripciones
     expect(screen.getByText(/A brave Digimon/)).toBeInTheDocument();
     expect(screen.getByText(/View in Japanese/)).toBeInTheDocument();
 
-    // Level, Type, Attribute
     expect(screen.getByText(/Rookie/)).toBeInTheDocument();
     expect(screen.getByText(/Reptile/)).toBeInTheDocument();
     expect(screen.getByText(/Vaccine/)).toBeInTheDocument();
 
-    // Fields
     expect(screen.getByText(/Dragon/)).toBeInTheDocument();
 
-    // Skills
     expect(screen.getByText(/Pepper Breath/)).toBeInTheDocument();
     expect(screen.getByText(/Shoots fire/)).toBeInTheDocument();
   });

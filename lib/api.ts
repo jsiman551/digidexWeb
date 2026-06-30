@@ -1,4 +1,3 @@
-// Definimos el tipo de Digimon según la API
 export interface Digimon {
   id: number
   name: string
@@ -8,10 +7,9 @@ export interface Digimon {
   type: string
 }
 
-// Función para obtener todos los Digimon (paginados)
 export async function getDigimon(page: number = 1): Promise<Digimon[]> {
   const res = await fetch(`https://digi-api.com/api/v1/digimon?page=${page}`, {
-    next: { revalidate: 60 }, // revalidación cada 60s
+    next: { revalidate: 60 },
   })
 
   if (!res.ok) {
@@ -19,7 +17,7 @@ export async function getDigimon(page: number = 1): Promise<Digimon[]> {
   }
 
   const data = await res.json()
-  return data.content // la API devuelve { content: [...] }
+  return data.content
 }
 
 export async function getDigimonById(id: number) {

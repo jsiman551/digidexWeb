@@ -16,11 +16,9 @@ describe('ClientHeader', () => {
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', '/digimon');
 
-    // Heading oculto
     const heading = screen.getByRole('heading', { name: 'Digidex', hidden: true });
     expect(heading).toBeInTheDocument();
 
-    // Texto visible en el span
     const visibleText = screen.getByText('Digidex', { selector: 'span' });
     expect(visibleText).toBeInTheDocument();
   });

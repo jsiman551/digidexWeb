@@ -14,10 +14,8 @@ describe('Tooltip', () => {
     render(<Tooltip label="Info">Hover me</Tooltip>);
     const trigger = screen.getByText(/Hover me/i);
 
-    // Antes del hover, el tooltip no está
     expect(screen.queryByText(/Info/i)).not.toBeInTheDocument();
 
-    // Hover
     await user.hover(trigger);
     expect(screen.getByText(/Info/i)).toBeInTheDocument();
   });

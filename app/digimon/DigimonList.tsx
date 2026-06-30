@@ -12,7 +12,6 @@ interface Digimon {
 
 type FetchOpts = { page?: number; name?: string };
 
-// simple debounce
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function debounce<T extends (...args: any[]) => void>(fn: T, wait = 300) {
   let t: ReturnType<typeof setTimeout> | null = null;
@@ -23,7 +22,6 @@ function debounce<T extends (...args: any[]) => void>(fn: T, wait = 300) {
 }
 
 export default function DigimonList() {
-  // UI page is 1-based
   const [page, setPage] = useState(1);
   const [digimons, setDigimons] = useState<Digimon[]>([]);
   const [loading, setLoading] = useState(false);
@@ -38,7 +36,6 @@ export default function DigimonList() {
       setLoading(true);
       try {
         const uiPage = opts?.page ?? page;
-        // API expects 0-based page index
         const apiPage = Math.max(0, uiPage - 1);
 
         const params = new URLSearchParams();
