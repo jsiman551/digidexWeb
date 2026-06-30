@@ -63,3 +63,13 @@ project/
 - `npm run format:check` – Verify code formatting.
 
 ---
+
+## 🧪 Testing Strategy
+
+This project uses **Vitest** together with **React Testing Library** to ensure both unit and integration tests are reliable and easy to maintain.
+
+### Types of Tests
+
+- **Unit tests**: Validate small components in isolation (e.g., `FiltersBar`, `Tooltip`).
+- **Integration tests**: Cover how components work together (e.g., `DigimonList`, dynamic route `[id]/page.tsx`).
+- **Coverage reports**: Optional, can be generated with `npm run test:coverage` to measure how much of the codebase is tested.
